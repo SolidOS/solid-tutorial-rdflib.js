@@ -1,4 +1,4 @@
-# Tutorials for using rdflib.js
+# Tutorial for using rdflib.js
 
 This tutorial will walk you through what [rdflib.js](https://github.com/linkeddata/rdflib.js) can do, and how you can build Solid apps with it.
 
