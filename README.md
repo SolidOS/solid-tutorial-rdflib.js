@@ -99,6 +99,22 @@ for (var i=0; i<friends.length;i++) {
 }
 ```
 
+### Wildcards in statements
+
+An alternative to using `each()` comes in the form of `statementsMatching()`, which returns an array of statements that match a specific triple pattern.
+
+For example, we can obtain all the statements having `foaf:knows` as a predicate. This way we obtain an array of all the people and all the friends they have. Then it's up to us to decide what information we want to use, may that be the subjects or the objects of those statements.
+
+```Javascript
+var friends = store.statementsMatching(undefined, FOAF('knows'), undefined)
+for (var i=0; i<friends.length;i++) {
+    friend = friends[i]
+    console.log(friend.subject.uri) // a person having friends
+    console.log(friend.object.uri) // a friend of a person
+    ...
+}
+```
+
 ## Adding data
 
 The `add(s, p, o, w)` method allows a statement to be added to a formula. The optional `w` argument can be used to keep track of which resource was the source (URI) for each triple.
