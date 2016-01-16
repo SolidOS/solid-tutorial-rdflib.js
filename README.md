@@ -44,6 +44,8 @@ These are types of nodes in the RDF graph. We call them terms because they are l
 var store = new $rdf.graph()
 ```
 
+### Fetch data into the store
+
 You can also load data from an existing URL into the store you just created.
 
 ```Javascript
