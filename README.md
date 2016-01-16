@@ -44,11 +44,19 @@ These are types of nodes in the RDF graph. We call them terms because they are l
 var store = new $rdf.graph()
 ```
 
-You can then load a graph from an existing URL:
+You can also load data from an existing URL into the store you just created.
 
 ```Javascript
 var store = new $rdf.graph()
-store.load('https://www.w3.org/People/Berners-Lee/card')
+var fetcher = new $rdf.fetcher(store, '5000') // 5000 ms timeout
+
+f.nowOrWhenFetched(url, undefined, function(ok, body, xhr) {
+    if (!ok) {
+        console.log("Oops, something happened and couldn't fetch data");
+    } else {
+        // do something with the data in the store (see below)
+    }
+})
 ```
 
 ## Using data in the store
