@@ -25,7 +25,7 @@ You can type:
 var foafKnows = FOAF('knows');
 ```
 
-## RDF term types
+### RDF term types
 
 These are types of nodes in the RDF graph. We call them terms because they are like terms in a language when you think of RDF as a real language.
 
