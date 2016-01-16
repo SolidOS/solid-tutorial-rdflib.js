@@ -104,7 +104,7 @@ for (var i=0; i<friends.length;i++) {
 The `add(s, p, o, w)` method allows a statement to be added to a formula. The optional `w` argument can be used to keep track of which resource was the source (URI) for each triple.
 
 ```Javascript
-store.add(me, FOAF('knows'), $rdf.sym('https://fred.me/profile#me)
+store.add(me, FOAF('knows'), $rdf.sym('https://fred.me/profile#me')
 store.add(me, FOAF('name'), "Albert Bloggs")
 ```
  
