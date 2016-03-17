@@ -57,7 +57,7 @@ like terms in a language when you think of RDF as a real language.
 var store = $rdf.graph()
 ```
 
-### Fetch data into the store
+### Fetch data into the store from the Web
 
 You can also load data from an existing URL into the store you just created.
 
@@ -75,6 +75,27 @@ fetcher.nowOrWhenFetched(url, function(ok, body, xhr) {
 })
 ```
 
+### Load data into the store from a buffer/string
+
+Sometimes you may need to load data coming from a file or a buffer. Rdflib offers a helper function that simply parses a string (containing RDF). This function takes the following parameters:
+
+* `body` - the RDF statements (content to be parsed)
+* `store` - the graph/store object where the RDF should be parsed to
+* `uri` - the URI of the resource (named graph)
+* `mimeType` - the mime type corresponding to the data that needs to be parsed
+
+```
+var uri = 'https://example.org/resource.ttl'
+var body = '<a> <b> <c> .'
+var mimeType = 'text/turtle'
+var store = $rdf.graph
+
+try {
+    $rdf.parse(body, store, uri, mimeType)
+} catch (err) {
+    console.log(err)
+}
+```
 ## Using data in the store
 
 There are two ways to look at RDF data in a store. You can synchronously use the
