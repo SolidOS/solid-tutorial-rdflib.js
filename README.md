@@ -96,6 +96,7 @@ try {
     console.log(err)
 }
 ```
+
 ## Using data in the store
 
 There are two ways to look at RDF data in a store. You can synchronously use the
@@ -185,16 +186,10 @@ var myFoafFile = $rdf.sym(uri)
 var friendsInMyFOAF = store.each(me, FOAF('knows'), undefined, myFoafFile)
 ```
 
-## Parsing RDF data
+## Examples of applications using rdflib.js
 
-You can use `rdflib.js` to parse arbitrary RDF data.
+Here are a few examples of applications that use rdflib.js. For a full list, please see the [Solid app list](https://github.com/solid/solid-apps).
 
-```javascript
-var data
-// Fetch data via a regular AJAX call, load from a file, or pass in a literal
-// string. In this example, it was loaded from 'https://fred.me/profile'
-var store = $rdf.graph()  // Init a new empty graph
-var contentType = 'text/turtle'
-var baseUrl = 'https://fred.me/profile'
-var parsedGraph = $rdf.parse(data, store, baseUrl, contentType)
-```
+* [Profile editor](https://github.com/linkeddata/profile-editor/) (WebID profile editor)
+* [Inbox](https://github.com/solid/solid-inbox) (notifications)
+* [Plume](https://github.com/deiu/solid-plume) (blog)
