@@ -84,11 +84,11 @@ Sometimes you may need to load data coming from a file or a buffer. Rdflib offer
 * `uri` - the URI of the resource (named graph)
 * `mimeType` - the mime type corresponding to the data that needs to be parsed
 
-```
+```javascript
 var uri = 'https://example.org/resource.ttl'
 var body = '<a> <b> <c> .'
 var mimeType = 'text/turtle'
-var store = $rdf.graph
+var store = $rdf.graph()
 
 try {
     $rdf.parse(body, store, uri, mimeType)
