@@ -165,16 +165,34 @@ for (var i=0; i<friends.length;i++) {
 
 The `add(s, p, o, w)` method allows a statement to be added to a formula. The
 optional `w` argument can be used to keep track of which resource was the source
-(URI) for each triple.
+(URI) for each triple. Objects in a quad can either be nodes (URIs) or literals.
+
+To create a node, use `$rdf.sym()`. To create a plain literal, use a simple quoted
+string.
 
 ```javascript
 store.add(me, FOAF('knows'), $rdf.sym('https://fred.me/profile#me')
 store.add(me, FOAF('name'), "Albert Bloggs")
 ```
 
-Note above where the RDF thing in question is a literal, you can just pass a
-javascript literal and a string, boolean, or numeric literal of the appropriate
-datatype will be used.
+For a literal with a language attribute and/or data type, use `$rdf.lit()`. The example 
+below shows how you can set a `dateTime` data type for a date value, where `dateTime`
+is an RDF property described by the `XSD` vocabulary.
+
+```javascript
+$rdf.lit('2016-02-29T21:44:31+00:00', '', XSD('dateTime'))
+
+// produces -> "2016-02-29T21:44:31+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>
+```
+
+For a language tag, you can pass the shortname value (e.g. `en`) to the second parameter of
+the `$rdf.lit()` function.
+
+```javascript
+$rdf.lit('Hello world!', 'en')
+
+// produces -> "Hello world!"@en
+```
 
 The `each()`, `any()` and `statementsMatching()` functions in fact can take a
 fourth argument to select data from a particular source. For example, I want to
