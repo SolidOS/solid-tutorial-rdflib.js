@@ -118,7 +118,7 @@ or using the vocabulary namespace straight away
 
 ```javascript
 var me = $rdf.sym('http://www.w3.org/People/Berners-Lee/card#i');
-var friend = store.any(me, FOAF('friend'))
+var friend = store.any(me, FOAF('knows'))
 ```
 
 ## Wildcards
