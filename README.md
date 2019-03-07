@@ -19,10 +19,10 @@ predicates is simplified by using a namespace function, turning them into
 prefixes:
 
 ```javascript
-var RDF = Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-var RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-var FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-var XSD = Namespace("http://www.w3.org/2001/XMLSchema#")
+var RDF = $rdf.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+var RDFS = $rdf.Namespace("http://www.w3.org/2000/01/rdf-schema#")
+var FOAF = $rdf.Namespace("http://xmlns.com/foaf/0.1/")
+var XSD = $rdf.Namespace("http://www.w3.org/2001/XMLSchema#")
 ```
 
 So now, instead of typing the whole URI for your predicate, i.e.:
