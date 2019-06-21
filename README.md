@@ -100,7 +100,7 @@ try {
 ## Using data in the store
 
 There are two ways to look at RDF data in a store. You can synchronously use the
-each()` and `any()` methods and `statementsMatching()`, or you can do a query
+`each()` and `any()` methods and `statementsMatching()`, or you can do a query
 which returns results asynchronously.
 
 The `each()`, `any()` and `statementsMatching()` take a pattern of subject,
@@ -123,15 +123,12 @@ var friend = store.any(me, FOAF('knows'))
 
 ## Running SPARQL queries in the store
 
-RDFLib uses SPARQL queries in order to query data from your local store. Users can find out more information about writing sparql queries 
+RDFLib uses SPARQL queries in order to query data from your local store. Users can find out more information 
+about writing sparql queries [here](https://www.w3.org/TR/rdf-sparql-query/).
 
-[here]: https://www.w3.org/TR/rdf-sparql-query/
+When querying data stored in your Solid Pod, the first step is to fetch the data from your Pod into your local store. This is performed by the function "loadFromUrl". This function takes in a url from where your Pod can be reached and the variable that defines your local store. 
 
-.
-
-The first step in querying data storerd in your Solid Pod, is to fetch the data from your Pod into your local store. This is performed by the function "loadFromUrl". This function takes in a url from where your Pod can be reached and the variable that defines your local store. 
-
-The next step is call "prepare" in order to convert a SPARQL query string into a query object that can be used to run the query. After the query is prepared, execute the query by passing in the created query object and the local store you fetched your pod into. This will return an arrray of results based on what query the query returns from your local store. 
+The next step is to call `prepare()`, to convert a SPARQL query string into a query object that can be used to run the query. After the query is prepared, execute the query by passing in the created query object and the local store you fetched your pod into. This will return an arrray of results based on what query the query returns from your local store. 
 
 ```javascript
 import $rdf from "rdflib";
@@ -227,8 +224,7 @@ const $rdf = require("rdflib");
 const store = $rdf.graph();
 var updater = new $rdf.UpdateManager(store);
 
-
-// Address of the named node that will store you uploaded data
+// Address of the named node that will store your uploaded data
 me = store.sym(uri);
 // Creates the graph
 profile = me.doc();
