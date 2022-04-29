@@ -66,14 +66,19 @@ var store = $rdf.graph()
 var timeout = 5000 // 5000 ms timeout
 var fetcher = new $rdf.Fetcher(store, timeout)
 
-fetcher.nowOrWhenFetched(url, function(ok, body, xhr) {
+fetcher.nowOrWhenFetched(url, function(ok, body, response) {
     if (!ok) {
-        console.log("Oops, something happened and couldn't fetch data");
+        console.log("Oops, something happened and couldn't fetch data " + body);
+    } else if (response.onErrorWasCalled || response.status !== 200) {
+        console.log('    Non-HTTP error reloading data! onErrorWasCalled=' + response.onErrorWasCalled + ' status: ' + response.status)
     } else {
-        // do something with the data in the store (see below)
-    }
+         console.log("---data loaded---")
 })
 ```
+an easier version is now:
+```javascript
+   await fetcher.load(linkToUIontology)
+```   
 
 ### Load data into the store from a buffer/string
 
