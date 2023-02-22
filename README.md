@@ -126,6 +126,142 @@ var me = $rdf.sym('http://www.w3.org/People/Berners-Lee/card#i');
 var friend = store.any(me, FOAF('knows'))
 ```
 
+## Running SPARQL queries in the store
+
+RDFLib uses SPARQL queries in order to query data from your local store. Users can find out more information 
+about writing sparql queries [here](https://www.w3.org/TR/rdf-sparql-query/).
+
+When querying data stored in your Solid Pod, the first step is to fetch the data from your Pod into your local store. This is performed by the function `loadFromUrl()`. This function takes in a url from where your Pod can be reached and the variable that defines your local store. 
+
+The next step is to call `prepare()`, to convert a SPARQL query string into a query object that can be used to run the query. After the query is prepared, execute the query by passing in the created query object and the local store you fetched your pod into. This will return an arrray of results based on what query the query returns from your local store. 
+
+```javascript
+import $rdf from "rdflib";
+const query = "select distinct ?s ?p ?o where {  ?s ?p ?o. }";
+const store = $rdf.graph();
+
+// Loads the data from a URL into the local store
+const loadFromUrl = (url, store) => {
+  return new Promise((resolve, reject) => {
+    let fetcher = new $rdf.Fetcher(store);
+    try {
+      fetcher.load(url).then(response => {
+        resolve(response.responseText);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+// Prepares a query by converting SPARQL into a Solid query
+const prepare = (qryStr, store) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let query = $rdf.SPARQLToQuery(qryStr, false, store);
+      resolve(query);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
+// Puts query results into an array according to the projection
+const rowHandler = (wanted, results) => {
+  const row = {};
+  for (var r in results) {
+    let found = false;
+    let got = r.replace(/^\?/, "");
+    if (wanted.length) {
+      for (var w in wanted) {
+        if (got === wanted[w].label) {
+          found = true;
+          continue;
+        }
+      }
+      if (!found) continue;
+    }
+    row[got] = results[r].value;
+  }
+  return row;
+};
+
+// Executes a query on the local store
+const execute = (qry, store) => {
+  return new Promise((resolve, reject) => {
+    const wanted = qry.vars;
+    const resultAry = [];
+    store.query(
+      qry,
+      results => {
+        if (typeof results === "undefined") {
+          reject("No results.");
+        } else {
+          let row = rowHandler(wanted, results);
+          if (row) resultAry.push(row);
+        }
+      },
+      {},
+      () => {
+        resolve(resultAry);
+      }
+    );
+  });
+};
+
+async function getData() {
+  loadFromUrl(url, store).then(() =>
+    prepare(query, store).then(qry =>
+      execute(qry, store).then(results => {
+        // Do somthing with results here
+      })
+    )
+  );
+}
+```
+
+
+
+## Uploading data to POD
+
+```javascript
+const $rdf = require("rdflib");
+const store = $rdf.graph();
+var updater = new $rdf.UpdateManager(store);
+
+// Address of the named node that will store your uploaded data
+me = store.sym(uri);
+// Creates the graph
+profile = me.doc();
+
+/*
+store.match returns a statement that matches the parameters passed 
+in (subject, predicate, object, graph). These statement keep track of the current state
+of the local store at the specific uri. We set the parameters to null in order to pull back everything in the graph.
+*/
+var currentstatements = store.match(null, null, null, profile);
+// Add the triple to your local store that you want to send to your pod
+store.add(me, store.sym(predicate), object, profile);
+// Returns everything in the graph with the addition you made
+var insertstatements = store.match(null, null, null, profile);
+/*
+This promise uses updater to take in the state of your graph before the changes and after you add the triple. It then uses the info to update your Solid Pod. 
+*/
+new Promise((accept, reject) => updater.update(currentstatements, insertstatements,
+(uri, ok, message) => {
+  if (ok)
+    accept();
+  else
+    reject(message);
+}));
+
+
+
+
+```
+
+
+
 ## Wildcards
 
 When one of the terms of the triple is set as *undefined*, it then serves as a
